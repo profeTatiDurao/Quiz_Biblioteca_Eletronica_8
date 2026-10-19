@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Elegibilidade de Devolução e Casos de Teste</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #2b2b3d;
+            padding: 30px;
+            width: 680px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #a5b4fc;
+        }
+
+        .subtitulo {
+            font-size: 0.95rem;
+            color: #cccccc;
+            margin-bottom: 25px;
+        }
+
+        .pergunta {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-left: 3px solid #a5b4fc;
+            background-color: #242436;
+            border-radius: 6px;
+        }
+
+        .pergunta p {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        code {
+            color: #a5b4fc;
+            background-color: #1e1e2f;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #a5b4fc;
+            color: #1e1e2f;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #818cf8;
+            transform: translateY(-2px);
+        }
+
+        #resultado {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #a5b4fc;
+        }
+
+        #linkRespostas {
+            margin-top: 15px;
+            word-break: break-all;
+        }
+
+        #linkRespostas a {
+            color: #a5b4fc;
+            font-weight: bold;
+        }
+
+        .correto {
+            color: #00ff7f;
+            font-weight: bold;
+        }
+
+        .errado {
+            color: #ff4040;
+            font-weight: bold;
+        }
+
+        .neutro {
+            color: #ffd166;
+            font-weight: bold;
+        }
+
+        @media (max-width: 720px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Quiz - Elegibilidade de Devolução & Testes</h1>
+
+        <p class="subtitulo">
+            Responda às 6 perguntas sobre a função de devolução, consultas ordenadas no Firestore e os cenários de testes planejados.
+        </p>
+
+        <form id="quizForm">
+
+            <div class="pergunta" id="q1box">
+                <p>1) O que a consulta <code>query(collection(db, "transactions"), where("bookId", "==", bookId), orderBy("date", "desc"), limit(1))</code> busca especificamente no Firestore?</p>
+
+                <label>
+                    <input type="radio" name="q1" value="a">
+                    Todas as transações já realizadas pelo aluno no ano corrente
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q1" value="b">
+                    Todos os livros devolvidos com data retroativa
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q1" value="c">
+                    O primeiro livro cadastrado na história da biblioteca
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q1" value="d">
+                    Apenas a transação mais recente associada àquele livro específico
+                </label>
+            </div>
+
+            <div class="pergunta" id="q2box">
+                <p>2) Na verificação <code>if (lastBookTransaction.studentId === studentId)</code> dentro da iteração, qual regra essencial de negócio está sendo validada?</p>
+
+                <label>
+                    <input type="radio" name="q2" value="a">
+                    Se o aluno possui pendências financeiras ativas com a instituição
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q2" value="b">
+                    Se o aluno é menor de idade e necessita de autorização para devolver o livro
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q2" value="c">
+                    Se o aluno que está tentando devolver o livro é exatamente a mesma pessoa que realizou a última retirada dele
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q2" value="d">
+                    Se o ID do livro e o ID do aluno possuem a mesma quantidade de caracteres
+                </label>
+            </div>
+
+            <div class="pergunta" id="q3box">
+                <p>3) No cenário de teste T11 (Livro indisponível, mas sem transação registrada), a condicional <code>if (querySnapshot.empty)</code> é acionada. Qual é o comportamento esperado?</p>
+
+                <label>
+                    <input type="radio" name="q3" value="a">
+                    O sistema define o aluno como não elegível, exibe um alerta de que nenhuma retirada foi encontrada e limpa os campos de ID
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q3" value="b">
+                    O sistema cria automaticamente um novo aluno fictício para assumir a transação
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q3" value="c">
+                    O livro é excluído permanentemente da coleção "books" por inconsistência de dados
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q3" value="d">
+                    A devolução é aprovada normalmente e o contador de livros do aluno é decrementado
+                </label>
+            </div>
+
+            <div class="pergunta" id="q4box">
+                <p>4) De acordo com o teste T10 (Livro indisponível + tentativa de devolução por aluno diferente), o que deve acontecer no banco de dados?</p>
+
+                <label>
+                    <input type="radio" name="q4" value="a">
+                    O sistema aceita a devolução e altera a posse do livro para o novo aluno
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q4" value="b">
+                    A devolução é bloqueada com aviso, o status do livro permanece indisponível e nenhuma transação ou contador é alterado
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q4" value="c">
+                    O livro torna-se disponível na mesma hora, mas o aluno que tentou devolver recebe uma advertência
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q4" value="d">
+                    O contador <code>number_of_books_issued</code> do aluno é reduzido imediatamente para zero
+                </label>
+            </div>
+
+            <div class="pergunta" id="q5box">
+                <p>5) Se durante a execução dos testes a consulta de devolução falhar e o console exibir o erro <code>FAILED_PRECONDITION</code>, qual ação técnica é exigida no Firestore?</p>
+
+                <label>
+                    <input type="radio" name="q5" value="a">
+                    Trocar o banco de dados por uma planilha local
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q5" value="b">
+                    Reiniciar o computador e limpar os dados de cache do navegador
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q5" value="c">
+                    Criar um índice composto (Composite Index) no painel do Firestore combinando os campos <code>bookId</code> e <code>date</code>
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q5" value="d">
+                    Apagar a coleção "transactions" e recriá-la manualmente com nomes diferentes
+                </label>
+            </div>
+
+            <div class="pergunta" id="q6box">
+                <p>6) No caso de teste T03 (Livro disponível + aluno A3 com <code>number_of_books_issued: 2</code>), qual é o resultado esperado da checagem?</p>
+
+                <label>
+                    <input type="radio" name="q6" value="a">
+                    O sistema permite retirar um terceiro livro desde que seja de uma categoria diferente
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q6" value="b">
+                    O aplicativo substitui automaticamente um dos livros anteriores pelo novo livro solicitado
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q6" value="c">
+                    O livro fica indisponível na biblioteca, mas sem salvar a transação
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q6" value="d">
+                    O empréstimo é recusado, nenhuma transação é gerada e é exibido um alerta informando que o aluno já retirou 2 livros
+                </label>
+            </div>
+
+            <button type="button" onclick="corrigir()">Enviar Respostas</button>
+
+        </form>
+
+        <p id="resultado"></p>
+
+        <p id="linkRespostas"></p>
+
+    </div>
+
+    <script>
+        function corrigir() {
+            // Gabarito com alternativas bem distribuídas (d, c, a, b, c, d)
+            const respostasCorretas = {
+                q1: "d",
+                q2: "c",
+                q3: "a",
+                q4: "b",
+                q5: "c",
+                q6: "d"
+            };
+
+            let pontos = 0;
+            const total = Object.keys(respostasCorretas).length;
+            const form = document.getElementById("quizForm");
+
+            let params = [];
+
+            for (const q in respostasCorretas) {
+                const box = document.getElementById(q + "box");
+
+                const antigo = box.querySelector(".feedback");
+                if (antigo) antigo.remove();
+
+                const marcado = form.querySelector(`input[name="${q}"]:checked`);
+
+                const respostaAluno = marcado ? marcado.value : "nao_respondeu";
+
+                const acertou = respostaAluno === respostasCorretas[q];
+
+                if (acertou) {
+                    pontos++;
+                }
+
+                params.push(`${q}=${respostaAluno}`);
+                params.push(`${q}_status=${acertou ? "correto" : "errado"}`);
+
+                const feedback = document.createElement("p");
+                feedback.classList.add("feedback");
+
+                if (respostaAluno === "nao_respondeu") {
+                    feedback.textContent = "⚠️ Você não marcou nenhuma alternativa.";
+                    feedback.classList.add("neutro");
+                } else if (acertou) {
+                    feedback.textContent = "✅ Correto!";
+                    feedback.classList.add("correto");
+                } else {
+                    let respostaCorretaTexto = "";
+
+                    const inputs = box.querySelectorAll("label input");
+
+                    inputs.forEach(input => {
+                        if (input.value === respostasCorretas[q]) {
+                            respostaCorretaTexto = input.parentNode.textContent.trim();
+                        }
+                    });
+
+                    feedback.textContent = `❌ Errado. A resposta correta é: ${respostaCorretaTexto}`;
+                    feedback.classList.add("errado");
+                }
+
+                box.appendChild(feedback);
+            }
+
+            document.getElementById("resultado").textContent =
+                `Você acertou ${pontos} de ${total} questões.`;
+
+            params.push(`pontos=${pontos}`);
+            params.push(`total=${total}`);
+
+            const urlBase = window.location.origin + window.location.pathname;
+            const link = urlBase + "?" + params.join("&");
+
+            document.getElementById("linkRespostas").innerHTML =
+                `🔗 Link com respostas e status:<br><a href="${link}" target="_blank">${link}</a>`;
+        }
+    </script>
+
+</body>
+
+</html>
